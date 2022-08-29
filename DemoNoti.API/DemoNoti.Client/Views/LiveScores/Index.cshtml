@@ -1,0 +1,32 @@
+﻿@model IEnumerable<DemoNoti.Client.Entities.Livescore>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SportTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SportName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SportRefId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SportNameKo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+</table>
