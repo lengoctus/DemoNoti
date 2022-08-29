@@ -7,6 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
+builder.Services.AddControllers().AddJsonOptions(ops =>
+{
+    ops.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
 
 var mysqlConn = builder.Configuration.GetConnectionString("mySQLConn");
 var migrationsAssembly = typeof(liveonsportContext).Assembly.GetName().Name;
@@ -18,6 +22,7 @@ builder.Services.AddDbContext<liveonsportContext>(options =>
         ServerVersion.AutoDetect(mysqlConn),
         p => p.MigrationsAssembly(migrationsAssembly)
     ));
+
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿using DemoNoti.API.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Text;
 
 namespace DemoNoti.API.Controllers
@@ -42,11 +43,11 @@ namespace DemoNoti.API.Controllers
                 };
 
                 var todoItemJson = new StringContent(
-                   JsonSerializer.Serialize(model),
+                   JsonConvert.SerializeObject(model),
                    Encoding.UTF8,
                    "application/json");
 
-                var response = client.PostAsync<Notification>(https://localhost:7162/LiveScores/PublishCreateLiveScore, todoItemJson);
+                var response = client.PostAsync("https://localhost:7162/LiveScores/PublishCreateLiveScore", todoItemJson);
                 response.Wait();
             }
 

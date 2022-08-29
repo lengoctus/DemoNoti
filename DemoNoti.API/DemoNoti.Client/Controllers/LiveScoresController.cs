@@ -8,9 +8,9 @@ namespace DemoNoti.Client.Controllers
     public class LiveScoresController : Controller
     {
         private readonly liveonsportContext _context;
-        private readonly IHubContext<BroadCastHub, IHubClient> _hub;
+        private readonly IHubContext<BroadCastHub> _hub;
 
-        public LiveScoresController(liveonsportContext context, IHubContext<BroadCastHub, IHubClient> hub)
+        public LiveScoresController(liveonsportContext context, IHubContext<BroadCastHub> hub)
         {
             _context = context;
             _hub = hub;
@@ -21,10 +21,46 @@ namespace DemoNoti.Client.Controllers
             return View(_context.Livescores.ToList());
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(Livescore model)
+        {
+            try
+            {
+                var data = new Livescore
+                {
+                    UrlImage = "202208250803_image.png",
+                    SportName = "Football",
+                    SportTypeId = 2,
+                    SportRefId = 0,
+                    CreatedAt = DateTime.Now,
+                    CreatedBy = 1,
+                    UpdatedAt = DateTime.Now,
+                    UpdatedBy = 1,
+                    SportNameKo = "안녕하세요"
+                };
+
+                _context.Livescores.Add(data);
+                _context.SaveChanges();
+
+                await _hub.Clients.All.SendAsync("BroadcastMessage");
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PublishCreateLiveScore(Notification model)
         {
-            await _hub.Clients.All.BroadcastMessage();
+            await _hub.Clients.All.SendAsync("BroadcastMessage");
             return Ok();
         }
 
@@ -33,6 +69,8 @@ namespace DemoNoti.Client.Controllers
         {
             return Ok(_context.Livescores.ToList());
         }
+
+        
     }
 
     public class Notification

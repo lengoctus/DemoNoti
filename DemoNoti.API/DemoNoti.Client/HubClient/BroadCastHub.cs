@@ -2,7 +2,7 @@
 
 namespace DemoNoti.Client.HubClient
 {
-    public class BroadCastHub : Hub<IHubClient>
+    public class BroadCastHub : Hub
     {
     }
 }
